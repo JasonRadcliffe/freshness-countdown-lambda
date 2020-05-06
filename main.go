@@ -55,7 +55,24 @@ func (p *ProcessEvents) OnLaunch(context context.Context, request *alexa.Request
 	return nil
 }
 
-//OnIntent is a func.
+//OnSessionEnded is a func.
+func (p *ProcessEvents) OnSessionEnded(context context.Context, request *alexa.Request, session *alexa.Session, aContext *alexa.Context, response *alexa.Response) error {
+
+	log.Printf("OnSessionEnded requestId=%s, sessionId=%s", request.RequestID, session.SessionID)
+
+	return nil
+}
+
+//Handle is the func run by main() which starts the program.
+func Handle(context context.Context, requestEnv *alexa.RequestEnvelope) (interface{}, error) {
+	return a.ProcessRequest(context, requestEnv)
+}
+
+func main() {
+	lambda.Start(Handle)
+}
+
+//OnIntent is where all the logic actually goes for processing the Alexa User's Intents.
 func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request, session *alexa.Session, aContext *alexa.Context, response *alexa.Response) error {
 	var speechText string
 	var userAccessToken string
@@ -78,6 +95,46 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		requestBody, _ := json.Marshal(apiRequestMap)
 
 		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes", "application/json", bytes.NewBuffer(requestBody))
+		if err != nil {
+			return errors.New("Unsuccessful")
+		}
+
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return errors.New("Unsuccessful on body read")
+		}
+
+		var apiResp FCAPIResponse
+		//var apiResp2 FCAPIResponse
+		log.Printf("got this response from API: \n%s", string(body))
+
+		jsonErr := json.Unmarshal(body, &apiResp)
+		if jsonErr != nil {
+			return errors.New("Unsuccessful on json unmarshal")
+		}
+
+		//var dishList dishDomain.Dishes
+		log.Printf("Here is the apiResp.Message:%s", apiResp.Message)
+		//log.Printf("Here is the apiResp.Message.Message (2nd level!!!):%s", apiResp2.Message)
+		var dishes dishDomain.Dishes
+		disherr := json.Unmarshal(apiResp.Message, &dishes)
+		if disherr != nil {
+			return errors.New("Unsuccessful on dishlist")
+		}
+
+		speechText = "DId it work? Dish #1:" + dishes[0].Title
+
+		response.SetSimpleCard(cardTitle, speechText)
+		response.SetOutputText(speechText)
+
+	case "GetExpiredDishes":
+
+		apiRequestMap["fcapiRequestType"] = "GET"
+
+		requestBody, _ := json.Marshal(apiRequestMap)
+
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expired", "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
@@ -152,6 +209,45 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		response.SetSimpleCard(cardTitle, speechText)
 		response.SetOutputText(speechText)
 
+	case "CreateDish":
+		//dishID := request.Intent.Slots["dishID"].Value
+
+		apiRequestMap["fcapiRequestType"] = "POST"
+		apiRequestMap["storageID"] = request.Intent.Slots["storageID"].Value
+		apiRequestMap["title"] = request.Intent.Slots["title"].Value
+		apiRequestMap["expireWindow"] = request.Intent.Slots["expireWindow"].Value
+
+		requestBody, _ := json.Marshal(apiRequestMap)
+
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/", "application/json", bytes.NewBuffer(requestBody))
+		if err != nil {
+			return errors.New("Unsuccessful")
+		}
+
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return errors.New("Unsuccessful on body read")
+		}
+
+		var apiResp FCAPIResponse
+		//var apiResp2 FCAPIResponse
+
+		log.Printf("got this response from API: \n%s", string(body))
+
+		jsonErr := json.Unmarshal(body, &apiResp)
+		if jsonErr != nil {
+			return errors.New("Unsuccessful on json unmarshal")
+		}
+
+		//var dishList dishDomain.Dishes
+		log.Printf("Here is the apiResp.Message:%s", apiResp.Message)
+
+		speechText = "Did it work? Message:" + string(apiResp.Message)
+
+		response.SetSimpleCard(cardTitle, speechText)
+		response.SetOutputText(speechText)
+
 	default:
 		log.Println("some other intent triggered")
 		speechText := "you are running some random intent"
@@ -161,21 +257,4 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 	}
 
 	return nil
-}
-
-//OnSessionEnded is a func.
-func (p *ProcessEvents) OnSessionEnded(context context.Context, request *alexa.Request, session *alexa.Session, aContext *alexa.Context, response *alexa.Response) error {
-
-	log.Printf("OnSessionEnded requestId=%s, sessionId=%s", request.RequestID, session.SessionID)
-
-	return nil
-}
-
-//Handle is the func run by main() which starts the program.
-func Handle(context context.Context, requestEnv *alexa.RequestEnvelope) (interface{}, error) {
-	return a.ProcessRequest(context, requestEnv)
-}
-
-func main() {
-	lambda.Start(Handle)
 }
