@@ -163,7 +163,7 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		response.SetOutputText(speechText)
 
 	case "GetDishesExpiresIn":
-
+		//TODO: Parse amazon duration and call /dishes/expiresby/{date}
 		apiRequestMap["fcapiRequestType"] = "GET"
 
 		requestBody, _ := json.Marshal(apiRequestMap)
@@ -247,7 +247,7 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/"+dishID, "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/dish/"+dishID, "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
@@ -301,7 +301,7 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/", "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/dish", "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
@@ -352,7 +352,7 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/"+dishID, "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/dish/"+dishID, "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
@@ -381,13 +381,13 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 
 	case "DeleteDish":
 
-		dishID := request.Intent.Slots["dish_id"].Value
+		dishID := request.Intent.Slots["personal_id"].Value
 
 		apiRequestMap["fcapiRequestType"] = "DELETE"
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/"+dishID, "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/dish/"+dishID, "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
