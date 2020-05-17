@@ -1,0 +1,490 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "freshness countdown",
+            "modelConfiguration": {
+                "fallbackIntentSensitivity": {
+                    "level": "LOW"
+                }
+            },
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "GetDishes",
+                    "slots": [],
+                    "samples": [
+                        "tell me about every dish I have",
+                        "get all the food in the fridge",
+                        "get all the dishes",
+                        "get the list of dishes"
+                    ]
+                },
+                {
+                    "name": "CreateDish",
+                    "slots": [
+                        {
+                            "name": "title",
+                            "type": "AMAZON.Food",
+                            "samples": [
+                                "It's called {title}",
+                                "The name is {title}",
+                                "{title}"
+                            ]
+                        },
+                        {
+                            "name": "expireWindow",
+                            "type": "AMAZON.DURATION",
+                            "samples": [
+                                "{expireWindow}",
+                                "give it {expireWindow}",
+                                "It will last for {expireWindow}"
+                            ]
+                        },
+                        {
+                            "name": "storageID",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "It's number {storageID}",
+                                "It's {storageID}",
+                                "{storageID}",
+                                "The ID is {storageID}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "Add {title} to the list number {storageID} It lasts for {expireWindow} ",
+                        "add something to the list for number {storageID}  It's good for {expireWindow} ",
+                        "add {title} to the list for storage id {storageID} and give it {expireWindow}",
+                        "add {title} to the list and give it {expireWindow}",
+                        "add {title} to the list",
+                        "add something to the list",
+                        "add a dish to the list",
+                        "add a dish to the fridge"
+                    ]
+                },
+                {
+                    "name": "GetDish",
+                    "slots": [
+                        {
+                            "name": "dishID",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "{dishID}",
+                                "number {dishID}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "what is number {dishID} ",
+                        "get a dish from the list",
+                        "Get dish number {dishID} from the list"
+                    ]
+                },
+                {
+                    "name": "GetExpiredDishes",
+                    "slots": [],
+                    "samples": [
+                        "What do I have in the cupboard that needs to be thrown out",
+                        "Tell me about everything that's already expired",
+                        "get all the food that is old",
+                        "get all the food that's expired",
+                        "get all the dishes that are expired",
+                        "get all the dishes that are old",
+                        "get the expired dishes"
+                    ]
+                },
+                {
+                    "name": "UpdateDish",
+                    "slots": [
+                        {
+                            "name": "personal_id",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "dish number {personal_id}",
+                                "food number {personal_id}",
+                                "{personal_id}",
+                                "It's number {personal_id}"
+                            ]
+                        },
+                        {
+                            "name": "title",
+                            "type": "AMAZON.Food"
+                        },
+                        {
+                            "name": "description",
+                            "type": "AMAZON.SearchQuery"
+                        },
+                        {
+                            "name": "storage_personal_id",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "expiration_window",
+                            "type": "AMAZON.DURATION"
+                        }
+                    ],
+                    "samples": [
+                        "change the title for number {personal_id} to {title} and give it another {expiration_window}",
+                        "set dish number eighty five to have the description {description}",
+                        "update the description for number seven to be {description}",
+                        "set the description for a food to say {description}",
+                        "change the description for a dish to {description}",
+                        "I want food number {personal_id} to expire  in {expiration_window}",
+                        "set the expiration to {expiration_window}",
+                        "change dish number {personal_id} so it expires in {expiration_window}",
+                        "set the title for {personal_id} to {title}",
+                        "move number {personal_id} to storage {storage_personal_id}",
+                        "change dish number {personal_id} to storage number {storage_personal_id}",
+                        "change the title of dish {personal_id} to {title}"
+                    ]
+                },
+                {
+                    "name": "DeleteDish",
+                    "slots": [
+                        {
+                            "name": "personal_id",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "{personal_id}",
+                                "It's number {personal_id}",
+                                "number {personal_id}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "I'm throwing away dish number {personal_id}",
+                        "remove food {personal_id} from the fridge",
+                        "remove dish number {personal_id} from the list",
+                        "remove {personal_id} from the list",
+                        "delete {personal_id}",
+                        "delete number {personal_id}",
+                        "Remove food number {personal_id}"
+                    ]
+                },
+                {
+                    "name": "GetDishesExpiresIn",
+                    "slots": [
+                        {
+                            "name": "expiration_window",
+                            "type": "AMAZON.DURATION",
+                            "samples": [
+                                "it's {expiration_window}",
+                                "{expiration_window}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "get me all the dishes that will expire in the next {expiration_window}",
+                        "get me every food that will expire within the next {expiration_window}",
+                        "what do I have in the fridge that will expire in {expiration_window}"
+                    ]
+                },
+                {
+                    "name": "GetDishesExpiresBy",
+                    "slots": [
+                        {
+                            "name": "expire_date",
+                            "type": "AMAZON.DATE",
+                            "samples": [
+                                "the date is {expire_date}",
+                                "{expire_date}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "tell me about stuff that's expiring before {expire_date}",
+                        "what will I have to throw out by the date {expire_date}",
+                        "what will go bad before {expire_date}",
+                        "tell me about all the dishes that will expire on or before {expire_date}",
+                        "get me all the food that will expire by {expire_date}"
+                    ]
+                }
+            ],
+            "types": []
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "CreateDish",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "title",
+                            "type": "AMAZON.Food",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.359573898294.250728763578"
+                            }
+                        },
+                        {
+                            "name": "expireWindow",
+                            "type": "AMAZON.DURATION",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1296588782380.300572707298"
+                            }
+                        },
+                        {
+                            "name": "storageID",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1296588782380.1140580865794"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "GetDish",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "dishID",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1038097593326.262515411727"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "UpdateDish",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "personal_id",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.806006938.1062967381295"
+                            }
+                        },
+                        {
+                            "name": "title",
+                            "type": "AMAZON.Food",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "description",
+                            "type": "AMAZON.SearchQuery",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "storage_personal_id",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "expiration_window",
+                            "type": "AMAZON.DURATION",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        }
+                    ]
+                },
+                {
+                    "name": "DeleteDish",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "personal_id",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": true,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "confirmation": "Confirm.Slot.415530492006.179013926014",
+                                "elicitation": "Elicit.Slot.415530492006.179013926014"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "GetDishesExpiresIn",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "expiration_window",
+                            "type": "AMAZON.DURATION",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.635676811808.964998329099"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "GetDishesExpiresBy",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "expire_date",
+                            "type": "AMAZON.DATE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.890084362127.1483201804221"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.359573898294.250728763578",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is the name of the food you want to add to the list?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1038097593326.262515411727",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which dish number am I getting for you?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What's the number of the dish you want to know about?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1296588782380.1140580865794",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Where am I adding this?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What's the ID number of the storage unit you're adding this to?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1296588782380.300572707298",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "How many days before this goes bad?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "How long will the {title}  last?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "How long will {title} last?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.806006938.1062967381295",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is the number of the food you want to update?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "which dish am I updating?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "what's the number of the dish you'd like to update?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.415530492006.179013926014",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's the number of the food you want to take off the list?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Which dish do you want to delete?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Slot.415530492006.179013926014",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Are you sure you want me to delete dish number {personal_id} ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.635676811808.964998329099",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is the length of time you are asking about?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.890084362127.1483201804221",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is the expiration date you are asking about?"
+                    }
+                ]
+            }
+        ]
+    }
+}
