@@ -51,30 +51,39 @@
                             ]
                         },
                         {
-                            "name": "expireWindow",
+                            "name": "expiration_window",
                             "type": "AMAZON.DURATION",
                             "samples": [
-                                "{expireWindow}",
-                                "give it {expireWindow}",
-                                "It will last for {expireWindow}"
+                                "{expiration_window}",
+                                "give it {expiration_window}",
+                                "It will last for {expiration_window}"
                             ]
                         },
                         {
-                            "name": "storageID",
+                            "name": "storage_id",
                             "type": "AMAZON.NUMBER",
                             "samples": [
-                                "It's number {storageID}",
-                                "It's {storageID}",
-                                "{storageID}",
-                                "The ID is {storageID}"
+                                "It's number {storage_id}",
+                                "It's {storage_id}",
+                                "{storage_id}",
+                                "The ID is {storage_id}"
+                            ]
+                        },
+                        {
+                            "name": "description",
+                            "type": "AMAZON.SearchQuery",
+                            "samples": [
+                                "It should say {description}",
+                                "the description is {description}",
+                                "{description}"
                             ]
                         }
                     ],
                     "samples": [
-                        "Add {title} to the list number {storageID} It lasts for {expireWindow} ",
-                        "add something to the list for number {storageID}  It's good for {expireWindow} ",
-                        "add {title} to the list for storage id {storageID} and give it {expireWindow}",
-                        "add {title} to the list and give it {expireWindow}",
+                        "Add {title} to the list number {storage_id} It lasts for {expiration_window} ",
+                        "add something to the list for number {storage_id}  It's good for {expiration_window} ",
+                        "add {title} to the list for storage id {storage_id} and give it {expiration_window}",
+                        "add {title} to the list and give it {expiration_window}",
                         "add {title} to the list",
                         "add something to the list",
                         "add a dish to the list",
@@ -85,18 +94,18 @@
                     "name": "GetDish",
                     "slots": [
                         {
-                            "name": "dishID",
+                            "name": "dish_id",
                             "type": "AMAZON.NUMBER",
                             "samples": [
-                                "{dishID}",
-                                "number {dishID}"
+                                "{dish_id}",
+                                "number {dish_id}"
                             ]
                         }
                     ],
                     "samples": [
-                        "what is number {dishID} ",
+                        "what is number {dish_id} ",
                         "get a dish from the list",
-                        "Get dish number {dishID} from the list"
+                        "Get dish number {dish_id} from the list"
                     ]
                 },
                 {
@@ -134,7 +143,7 @@
                             "type": "AMAZON.SearchQuery"
                         },
                         {
-                            "name": "storage_personal_id",
+                            "name": "storage_id",
                             "type": "AMAZON.NUMBER"
                         },
                         {
@@ -152,8 +161,8 @@
                         "set the expiration to {expiration_window}",
                         "change dish number {personal_id} so it expires in {expiration_window}",
                         "set the title for {personal_id} to {title}",
-                        "move number {personal_id} to storage {storage_personal_id}",
-                        "change dish number {personal_id} to storage number {storage_personal_id}",
+                        "move number {personal_id} to storage {storage_id}",
+                        "change dish number {personal_id} to storage number {storage_id}",
                         "change the title of dish {personal_id} to {title}"
                     ]
                 },
@@ -239,7 +248,7 @@
                             }
                         },
                         {
-                            "name": "expireWindow",
+                            "name": "expiration_window",
                             "type": "AMAZON.DURATION",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
@@ -248,12 +257,21 @@
                             }
                         },
                         {
-                            "name": "storageID",
+                            "name": "storage_id",
                             "type": "AMAZON.NUMBER",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
                                 "elicitation": "Elicit.Slot.1296588782380.1140580865794"
+                            }
+                        },
+                        {
+                            "name": "description",
+                            "type": "AMAZON.SearchQuery",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1078941934626.1291802821323"
                             }
                         }
                     ]
@@ -265,7 +283,7 @@
                     "prompts": {},
                     "slots": [
                         {
-                            "name": "dishID",
+                            "name": "dish_id",
                             "type": "AMAZON.NUMBER",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
@@ -305,7 +323,7 @@
                             "prompts": {}
                         },
                         {
-                            "name": "storage_personal_id",
+                            "name": "storage_id",
                             "type": "AMAZON.NUMBER",
                             "confirmationRequired": false,
                             "elicitationRequired": false,
@@ -482,6 +500,15 @@
                     {
                         "type": "PlainText",
                         "value": "What is the expiration date you are asking about?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1078941934626.1291802821323",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is the description of this item?"
                     }
                 ]
             }
