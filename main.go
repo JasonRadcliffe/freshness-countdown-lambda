@@ -157,7 +157,11 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 			return errors.New("Unsuccessful on dishlist")
 		}
 
-		speechText = "DId it work? Dish #1:" + dishes[0].Title
+		if len(dishes) > 0 {
+			speechText = "DId it work? Dish #1:" + dishes[0].Title
+		} else {
+			speechText = "It might not have worked. There were no expired dishes found."
+		}
 
 		response.SetSimpleCard(cardTitle, speechText)
 		response.SetOutputText(speechText)
@@ -168,9 +172,9 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		durationString := request.Intent.Slots["expiration_window"].Value
+		dateString := "2018-10-15"
 
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiresin/"+durationString, "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiresby/"+dateString, "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
@@ -207,7 +211,7 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		dateString := "2015-11-24"
+		dateString := "2018-10-15"
 
 		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiresby/"+dateString, "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
@@ -329,8 +333,9 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		response.SetOutputText(speechText)
 
 	case "UpdateDish":
+		log.Printf("in the UpdateDish function")
 
-		dishID := request.Intent.Slots["dish_id"].Value
+		dishID := request.Intent.Slots["personal_id"].Value
 
 		apiRequestMap["fcapiRequestType"] = "PATCH"
 
@@ -351,10 +356,12 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		}
 
 		requestBody, _ := json.Marshal(apiRequestMap)
+		log.Printf("in the UpdateDish function - apiRequestMap Title:" + apiRequestMap["title"])
+		log.Printf("https://fcapi.jasonradcliffe.com/dishes/dish/" + dishID)
 
 		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/dish/"+dishID, "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
-			return errors.New("Unsuccessful")
+			return errors.New("Unsuccessful - " + err.Error())
 		}
 
 		defer resp.Body.Close()
