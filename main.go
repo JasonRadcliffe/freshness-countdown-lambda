@@ -166,45 +166,6 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		response.SetSimpleCard(cardTitle, speechText)
 		response.SetOutputText(speechText)
 
-		//TODO: Parse amazon duration and call /dishes/expiresby/{date}
-		apiRequestMap["fcapiRequestType"] = "GET"
-
-		dateString := "2018-10-15"
-		apiRequestMap["expireDate"] = dateString
-
-		requestBody, _ := json.Marshal(apiRequestMap)
-
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiredby", "application/json", bytes.NewBuffer(requestBody))
-		if err != nil {
-			return errors.New("Unsuccessful")
-		}
-
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return errors.New("Unsuccessful on body read")
-		}
-
-		var apiResp FCAPIResponse
-		log.Printf("got this response from API: \n%s", string(body))
-
-		jsonErr := json.Unmarshal(body, &apiResp)
-		if jsonErr != nil {
-			return errors.New("Unsuccessful on json unmarshal")
-		}
-
-		log.Printf("Here is the apiResp.Message:%s", apiResp.Message)
-		var dishes dishDomain.Dishes
-		disherr := json.Unmarshal(apiResp.Message, &dishes)
-		if disherr != nil {
-			return errors.New("Unsuccessful on dishlist")
-		}
-
-		speechText = "DId it work? Dish #1:" + dishes[0].Title
-
-		response.SetSimpleCard(cardTitle, speechText)
-		response.SetOutputText(speechText)
-
 	case "GetDishesExpiresBy":
 
 		apiRequestMap["fcapiRequestType"] = "GET"
