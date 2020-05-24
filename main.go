@@ -166,15 +166,15 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 		response.SetSimpleCard(cardTitle, speechText)
 		response.SetOutputText(speechText)
 
-	case "GetDishesExpiresIn":
 		//TODO: Parse amazon duration and call /dishes/expiresby/{date}
 		apiRequestMap["fcapiRequestType"] = "GET"
 
+		dateString := "2018-10-15"
+		apiRequestMap["expireDate"] = dateString
+
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		dateString := "2018-10-15"
-
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiresby/"+dateString, "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiredby", "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
@@ -208,12 +208,11 @@ func (p *ProcessEvents) OnIntent(context context.Context, request *alexa.Request
 	case "GetDishesExpiresBy":
 
 		apiRequestMap["fcapiRequestType"] = "GET"
+		apiRequestMap["expireDate"] = request.Intent.Slots["expire_date"].Value
 
 		requestBody, _ := json.Marshal(apiRequestMap)
 
-		dateString := "2018-10-15"
-
-		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiresby/"+dateString, "application/json", bytes.NewBuffer(requestBody))
+		resp, err := http.Post("https://fcapi.jasonradcliffe.com/dishes/expiredby", "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			return errors.New("Unsuccessful")
 		}
